@@ -29,6 +29,6 @@ import requests
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
 
 # Normalize the json response and load to DF
-fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
 # Display df
 streamlit.dataframe(fruityvice_normalized)
