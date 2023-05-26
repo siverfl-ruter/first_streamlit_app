@@ -1,6 +1,9 @@
 # This is code for the streamlit app
 import streamlit
 import pandas as pd
+import snowflake.connector
+import requests
+from urllib.error import URLError
 
 streamlit.title("My Parents New Healthy Diner")
 streamlit.text('🥣 Omega 3 & Blueberry Oatmeal')
@@ -28,16 +31,14 @@ fruit_choice = streamlit.text_input('What fruit would you like information about
 streamlit.write('The user entered ', fruit_choice)
 
 # Add frutyvice api call
-import requests
 fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
 
 # Normalize the json response and load to DF
 fruityvice_normalized = pd.json_normalize(fruityvice_response.json())
 # Display df
 streamlit.dataframe(fruityvice_normalized)
+streamlit.stop()
 
-
-import snowflake.connector
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 my_cur = my_cnx.cursor()
 my_cur.execute("SELECT * FROM fruit_load_list")
